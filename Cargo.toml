@@ -8,7 +8,7 @@ build = "build.rs"
 description = "Library for building canisters on the Internet Computer."
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/internet-computer-protocol/rustic/"
-keywords = ["icp", "blockchain", "smart contracts"]
+keywords = ["icp", "blockchain", "smart-contracts"]
 categories = ["cryptography::cryptocurrencies", "finance", "wasm"]
 
 
@@ -25,7 +25,7 @@ ic-cdk-timers = "0.3.0"
 num-traits = "0.2.15"
 serde = "1.0.164"
 serde_bytes = "0.11.9"
-rustic-macros = { path = "../rustic-macros"}
+rustic-macros = "0.0.1"
 
 [features]
 default = ["access-roles", "reentrancy", "lifecycle"]
