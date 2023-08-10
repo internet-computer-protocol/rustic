@@ -1,0 +1,112 @@
+use candid::Principal;
+
+#[macro_export]
+macro_rules! function {
+    () => {{
+        fn f() {}
+        fn type_name_of<T>(_: T) -> &'static str {
+            std::any::type_name::<T>()
+        }
+        let name = type_name_of(f);
+        &name[..name.len() - 3]
+    }};
+}
+
+#[inline]
+pub fn canister_caller() -> Principal {
+    #[cfg(not(test))]
+    return ic_cdk::api::caller();
+
+    #[cfg(test)]
+    return super::testing::mock_caller();
+}
+
+#[inline]
+pub fn canister_id() -> Principal {
+    #[cfg(not(test))]
+    return ic_cdk::api::id();
+
+    #[cfg(test)]
+    return super::testing::mock_id();
+}
+
+#[inline]
+pub fn canister_version() -> u64 {
+    #[cfg(not(test))]
+    return ic_cdk::api::canister_version();
+
+    #[cfg(test)]
+    return super::testing::mock_version();
+}
+
+#[inline]
+pub fn canister_time() -> u64 {
+    #[cfg(not(test))]
+    return ic_cdk::api::time();
+
+    #[cfg(test)]
+    return super::testing::mock_time();
+}
+
+#[inline]
+pub fn canister_balance() -> u64 {
+    #[cfg(not(test))]
+    return ic_cdk::api::canister_balance();
+
+    #[cfg(test)]
+    return super::testing::mock_balance() as u64;
+}
+
+#[inline]
+pub fn canister_balance128() -> u128 {
+    #[cfg(not(test))]
+    return ic_cdk::api::canister_balance128();
+
+    #[cfg(test)]
+    return super::testing::mock_balance();
+}
+
+#[inline]
+pub fn instruction_counter() -> u64 {
+    #[cfg(not(test))]
+    return ic_cdk::api::instruction_counter();
+
+    #[cfg(test)]
+    return super::testing::mock_instruction_counter();
+}
+
+#[inline]
+pub fn performance_counter(counter_type: u32) -> u64 {
+    #[cfg(not(test))]
+    return ic_cdk::api::performance_counter(counter_type);
+
+    #[cfg(test)]
+    return super::testing::mock_instruction_counter();
+}
+
+#[inline]
+pub fn is_controller(caller: &Principal) -> bool {
+    #[cfg(not(test))]
+    return ic_cdk::api::is_controller(caller);
+
+    #[cfg(test)]
+    return super::testing::is_mock_controller(caller);
+}
+
+#[inline]
+pub fn canister_print<S: std::convert::AsRef<str>>(s: S) {
+    #[cfg(not(test))]
+    ic_cdk::api::print(s);
+
+    #[cfg(test)]
+    println!("{}", s.as_ref()); // Does not print anything during `cargo test`
+}
+
+#[inline]
+pub fn canister_trap(message: &str) {
+    #[cfg(not(test))]
+    ic_cdk::api::call::reject(message);
+
+    #[cfg(test)]
+    panic!("{}", message);
+}

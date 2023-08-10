@@ -1,0 +1,40 @@
+[package]
+name = "rustic"
+version = "0.0.1"
+authors = ["Benji Zhai"]
+edition = "2021"
+rust-version = "1.65.0"
+build = "build.rs"
+description = "Library for building canisters on the Internet Computer."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/internet-computer-protocol/rustic/"
+keywords = ["icp", "blockchain", "smart contracts"]
+categories = ["cryptography::cryptocurrencies", "finance", "wasm"]
+
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+candid = "0.8.4"
+ciborium = "0.2.0"
+ic-cdk = "0.9.2"
+ic-cdk-macros = "0.6.0"
+ic-stable-structures = "0.5.4"
+ic-cdk-timers = "0.3.0"
+num-traits = "0.2.15"
+serde = "1.0.164"
+serde_bytes = "0.11.9"
+rustic-macros = { path = "../rustic-macros"}
+
+[features]
+default = ["access-roles", "reentrancy", "lifecycle"]
+access = []
+access-roles = ["access"]
+lifecycle = []
+logging = []
+pausable = ["access"]
+reentrancy = []
+
+[dev-dependencies]
+proptest = "1.2.0"
