@@ -968,7 +968,7 @@ checksum = "dbb5fb1acd8a1a18b3dd5be62d25485eb770e05afb408a9627d14d451bae12da"
 
 [[package]]
 name = "rustic"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "candid",
  "ciborium",
@@ -985,9 +985,9 @@ dependencies = [
 
 [[package]]
 name = "rustic-macros"
-version = "0.0.1"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "70c5d7941181a2b558ab7306e4e30803fea156ee799e2b3f55098b19d53f08db"
+checksum = "a85d8d0ac7b4ac42d95e3a85def55e316a885ee23f1bca21c15af9342bafac6f"
 dependencies = [
  "ic-cdk",
  "proc-macro2",
