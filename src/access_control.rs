@@ -12,6 +12,8 @@
 #![cfg(feature = "access")]
 
 use crate::default_memory_map::*;
+#[cfg(test)]
+use crate::testing::*;
 use crate::types::*;
 use crate::utils::*;
 use candid::{candid_method, CandidType, Principal};
@@ -19,8 +21,6 @@ use ic_cdk_macros::{query, update};
 use ic_stable_structures::{DefaultMemoryImpl, StableBTreeMap, StableCell};
 use rustic_macros::modifiers;
 use std::cell::RefCell;
-#[cfg(test)]
-use crate::testing::*;
 
 #[derive(Clone, CandidType, serde::Serialize, serde::Deserialize)]
 struct AccessControl {
@@ -288,7 +288,6 @@ pub fn has_role(role: u8) -> Result<(), String> {
     })
 }
 
-
 #[cfg(feature = "access-roles")]
 #[candid_method(query)]
 #[query]
@@ -448,8 +447,12 @@ mod access_tests {
         set_mock_caller(Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap());
         access_init();
         assert!(only_admin().is_ok());
-        assert!(is_admin(Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap()));
-        assert!(!is_admin(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()));
+        assert!(is_admin(
+            Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap()
+        ));
+        assert!(!is_admin(
+            Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()
+        ));
         set_mock_caller(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap());
         assert!(only_admin().is_err());
     }
@@ -458,9 +461,13 @@ mod access_tests {
     fn test_grant_admin() {
         set_mock_caller(Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap());
         access_init();
-        assert!(!is_admin(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()));
+        assert!(!is_admin(
+            Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()
+        ));
         grant_admin(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap());
-        assert!(is_admin(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()));
+        assert!(is_admin(
+            Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()
+        ));
         set_mock_caller(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap());
         assert!(only_admin().is_ok());
     }
@@ -469,9 +476,13 @@ mod access_tests {
     fn test_revoke_admin() {
         set_mock_caller(Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap());
         access_init();
-        assert!(is_admin(Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap()));
+        assert!(is_admin(
+            Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap()
+        ));
         revoke_admin(Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap());
-        assert!(!is_admin(Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap()));
+        assert!(!is_admin(
+            Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap()
+        ));
         set_mock_caller(Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap());
         assert!(only_admin().is_err());
     }
@@ -481,11 +492,15 @@ mod access_tests {
         set_mock_caller(Principal::from_text("a4gq6-oaaaa-aaaab-qaa4q-cai").unwrap());
         access_init();
         grant_admin(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap());
-        assert!(is_admin(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()));
+        assert!(is_admin(
+            Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()
+        ));
         set_mock_caller(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap());
         assert!(only_admin().is_ok());
         renounce_admin();
-        assert!(!is_admin(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()));
+        assert!(!is_admin(
+            Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap()
+        ));
     }
 
     #[test]
@@ -505,7 +520,6 @@ mod access_tests {
         set_mock_caller(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap());
         revoke_admin(Principal::from_text("mxzaz-hqaaa-aaaar-qaada-cai").unwrap());
     }
-
 }
 
 #[cfg(test)]
@@ -527,10 +541,10 @@ mod access_role_tests {
         }
     }
 
-    const ROLE0:u8 = 0;
-    const ROLE1:u8 = 1;
-    const ROLE2:u8 = 2;
-    const ROLE3:u8 = 3;
+    const ROLE0: u8 = 0;
+    const ROLE1: u8 = 1;
+    const ROLE2: u8 = 2;
+    const ROLE3: u8 = 3;
 
     #[test]
     #[should_panic(expected = "msg_reject should only be called inside canisters")]

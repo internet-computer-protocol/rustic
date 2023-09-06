@@ -1,5 +1,14 @@
 use candid::Principal;
 
+// Anonymous callers can be dangerous if not properly validated
+// example: `#[rustic_macros::modifiers("not_anonymous@caller")]`
+fn not_anonymous(principal: Principal) -> Result<(), String> {
+    (principal != candid::Principal::anonymous())
+        .then_some(())
+        .ok_or("Anonymous caller is not allowed".to_string())
+}
+
+// Macro for displaying `type_name_of`
 #[macro_export]
 macro_rules! function {
     () => {{
@@ -12,6 +21,7 @@ macro_rules! function {
     }};
 }
 
+// Methods that wrap `ic_cdk::api` to allow for both testing and production use
 #[inline]
 pub fn canister_caller() -> Principal {
     #[cfg(not(test))]

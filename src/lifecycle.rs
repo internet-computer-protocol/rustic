@@ -1,14 +1,14 @@
 #![cfg(feature = "lifecycle")]
 // Canister Lifecycle Management
 use crate::default_memory_map::*;
+#[cfg(test)]
+use crate::testing::*;
 use crate::types::*;
 use crate::utils::*;
 use candid::{candid_method, CandidType};
 use ic_cdk_macros::query;
 use ic_stable_structures::{DefaultMemoryImpl, StableCell};
 use std::cell::RefCell;
-#[cfg(test)]
-use crate::testing::*;
 
 #[derive(Default, Clone, CandidType, serde::Serialize, serde::Deserialize)]
 pub struct CanisterLifecycle {

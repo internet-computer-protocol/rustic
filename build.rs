@@ -11,7 +11,7 @@ fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
     let dest_path = Path::new(&out_dir).join("config.rs");
     #[allow(clippy::unwrap_used)] // safe unwrap during build
-    let mut f = File::create(&dest_path).unwrap();
+    let mut f = File::create(dest_path).unwrap();
 
     #[allow(clippy::unwrap_used)] // safe unwrap during build
     f.write_all(format!("pub const USER_PAGE_END: u64 = {};\n", user_page_end).as_bytes())

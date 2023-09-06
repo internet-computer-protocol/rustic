@@ -7,13 +7,13 @@
 #![cfg(feature = "reentrancy")]
 
 use crate::default_memory_map::*;
+#[cfg(test)]
+use crate::testing::*;
 use crate::types::*;
 use crate::utils::*;
 use candid::Principal;
 use ic_stable_structures::StableBTreeMap;
 use std::cell::RefCell;
-#[cfg(test)]
-use crate::testing::*;
 
 pub struct ReentrancyGuard {
     caller: Principal,

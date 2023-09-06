@@ -5,12 +5,12 @@
 
 use crate::access_control::*;
 use crate::global_flags::*;
-use crate::types::*;
-use rustic_macros::modifiers;
-use candid::candid_method;
-use ic_cdk_macros::{query, update};
 #[cfg(test)]
 use crate::testing::*;
+use crate::types::*;
+use candid::candid_method;
+use ic_cdk_macros::{query, update};
+use rustic_macros::modifiers;
 
 pub fn when_not_paused() -> Result<(), String> {
     #[allow(clippy::unwrap_used)] // unwrap desired
