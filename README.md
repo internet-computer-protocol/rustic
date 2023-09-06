@@ -9,20 +9,20 @@ Rustic is a framework for developing canisters on the Internet Computer.
 # Features
 - [x] access: access control equivalent to OpenZeppelin Ownable2Step + admin list
 - [x] access-roles: access control equivalent to OpenZeppelin AccessControl
-- [] audit: events for auditing
-- [] backup: backup data
-- [] cache: cache for performance
-- [] certified: certified queries
-- [] factory: canister factories
-- [] https: https interface to the canister with metrics etc
-- [] inspection: cycle histogram for update methods
+- [ ] audit-events: events for auditing
+- [ ] backup: backup data
+- [ ] cache: cache for performance
+- [ ] certified: certified queries
+- [ ] factory: canister factories
+- [ ] https: https interface to the canister with metrics etc
+- [ ] inspection: cycle histogram for update methods
 - [x] lifecycle: canister lifecycle management
-- [] logging: canister logging
+- [ ] logging: canister logging
 - [x] pausable: equivalent to OpenZeppelin Pausable
-- [] payment: payment helpers
+- [ ] payment: payment helpers
 - [x] reentrancy: equivalent to OpenZeppelin ReentrancyGuard
-- [] testing: helpers for unit testing
-- [] tokens: fungible and non-fungible tokens
+- [ ] testing: helpers for unit testing
+- [ ] tokens: fungible and non-fungible tokens
 
 # Usage
 ## Before you start
@@ -61,10 +61,13 @@ When using the `lifecycle` feature (enabled by default), in the post-upgrade hoo
 Do NOT use the pre-upgrade hook in your application EVER. This feature shall be considered deprecated.
 
 # Known issues
-1. Update guard is not executed during unit tests (or any calls from within the canister).
+
+# Caveats
+1. Update guard is not executed during unit tests (or any calls from within the canister). This behavior differs from Solidity modifier guards.
 `#[update(guard = "only_owner")] pub fn transfer_ownership` expands to:
 ```rust
-#[export_name = "canister_update transfer_ownership"]
+    /// # This exported function contains the guard
+    #[export_name = "canister_update transfer_ownership"]
     fn transfer_ownership_0_() {
         ic_cdk::setup();
         let r: Result<(), String> = only_owner();
@@ -78,13 +81,12 @@ Do NOT use the pre-upgrade hook in your application EVER. This feature shall be 
             ic_cdk::api::call::reply(())
         });
     }
-    /// If the `new_owner` is set to `None`, then the ownership transfer is cancelled
-    #[cfg(feature = "access")]
+    /// # This internal function does not contain the guard
     pub fn transfer_ownership(new_owner: Option<Principal>) {
-        if let Some(x) = new_owner 
-        // rest of code
+        // implemantation of transfer_ownership
     }
 ```
+In order to have guards that work for both internal and external calls, the `rustic-macros` crate includes a `modifiers` macro that works for both internal and external calls.
 
 # License
 MIT

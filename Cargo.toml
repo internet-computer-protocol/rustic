@@ -16,15 +16,15 @@ categories = ["cryptography::cryptocurrencies", "finance", "wasm"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-candid = "0.8.4"
-ciborium = "0.2.0"
-ic-cdk = "0.9.2"
-ic-cdk-macros = "0.6.0"
-ic-stable-structures = "0.5.4"
-ic-cdk-timers = "0.3.0"
-num-traits = "0.2.15"
-serde = "1.0.164"
-serde_bytes = "0.11.9"
+candid = "0.8"
+ciborium = "0.2"
+ic-cdk = "0.9"
+ic-cdk-macros = "0.6"
+ic-stable-structures = "0.5"
+ic-cdk-timers = "0.3"
+num-traits = "0.2"
+serde = "1.0"
+serde_bytes = "0.11"
 rustic-macros = "0.0.1"
 
 [features]
