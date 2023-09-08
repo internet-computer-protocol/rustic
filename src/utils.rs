@@ -2,6 +2,7 @@ use candid::Principal;
 
 // Anonymous callers can be dangerous if not properly validated
 // example: `#[rustic_macros::modifiers("not_anonymous@caller")]`
+#[allow(dead_code)]
 fn not_anonymous(principal: Principal) -> Result<(), String> {
     (principal != candid::Principal::anonymous())
         .then_some(())
