@@ -1,15 +1,15 @@
-// =============================================
-// Ownable and AccessControl
-// =============================================
-// OpenZeppelin style Ownable2Step and AccessControl with owner as role admin
-// `grant_admin` may fail if memory page is full
-// `owner` is the manager of `admins`
-// `admins` is the manager of all roles (excluding itself)
-// `role_admins[i]` is the list of all roles that manage a specific role_i
-// A `role_admin` can add/revoke other principals, but cannot configure role admins for that role
-// if a role is defined in its own admin list, then it can manage itself
-// A maximum of 32 roles can be defined, each role is represented by a number of `u8`
 #![cfg(feature = "access")]
+
+/// # Ownable and AccessControl
+/// OpenZeppelin style Ownable2Step and AccessControl with owner as role admin.
+/// `grant_admin` may fail if memory page is full.
+/// `owner` is the manager of `admins`.
+/// `admins` is the manager of all roles (excluding itself).
+/// `role_admins[i]` is the list of all roles that manage a specific role_i.
+/// A `role_admin` can add/revoke other principals, but cannot configure role admins for that role.
+/// if a role is defined in its own admin list, then it can manage itself.
+/// A maximum of 32 roles can be defined, each role is represented by a number of `u8`.
+
 
 use crate::default_memory_map::*;
 #[cfg(test)]
@@ -53,8 +53,14 @@ pub(crate) fn access_init() {
     ACCESS_CONTROL.with(|c| c.borrow().get().0.clone());
 }
 
-/// Method to be used in `guard` to check if caller is owner
-
+/// Method to be used to check if the caller is the owner.
+/// This is typically used in conjunction with the `modifiers` macro
+/// # Example
+/// ```rust
+/// #[update]
+/// #[modifiers("only_owner")]
+/// fn my_func() {}
+/// ```
 pub fn only_owner() -> Result<(), String> {
     let caller = canister_caller();
     #[allow(clippy::unwrap_used)] // unwrap desired
@@ -65,8 +71,12 @@ pub fn only_owner() -> Result<(), String> {
     }
 }
 
-/// If the `new_owner` is set to `None`, then the ownership transfer is cancelled
-
+/// Transfer ownership to a new Principal in a 2-step transfer process.
+/// First, the original owner calls this function, specifying the new owner.
+/// The ownership is not affected until the new owners calls [`accept_ownership`s],
+/// at which point ownership would be transfered from the original owner to the new owner.
+/// If the `new_owner` is set to `None`, then the ownership transfer is cancelled.
+/// [`accept_ownership`]: #method.accept_ownership
 #[candid_method(update)]
 #[update]
 #[modifiers("only_owner")]
@@ -89,6 +99,7 @@ pub fn transfer_ownership(new_owner: Option<Principal>) {
     });
 }
 
+/// Accepts ownership transfer.
 #[candid_method(update)]
 #[update]
 pub fn accept_ownership() {

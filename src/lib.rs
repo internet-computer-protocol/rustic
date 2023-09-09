@@ -1,3 +1,8 @@
+#![doc = include_str!("../README.md")]
+
+#[doc(inline)]
+pub use rustic_macros::*;
+
 pub mod access_control;
 pub mod default_memory_map;
 mod global_flags;
@@ -9,6 +14,16 @@ pub mod testing;
 pub mod types;
 pub mod utils;
 
+/// Initializes the Rustic module. Needs to be called in the init hook of every canister.
+/// # Example
+/// ```rust
+/// #[init]
+/// pub fn init () {
+///    rustic::rustic_init();
+/// 
+///    // your own init code
+/// }
+/// ```
 pub fn rustic_init() {
     // The initialization order is very important.
     //crate::default_memory_map::memory_map_init(); // Not needed
@@ -21,6 +36,16 @@ pub fn rustic_init() {
     crate::logging::logging_init(true); // Trace always enabled
 }
 
+/// Post-upgrade hook for Rustic. Needs to be called in the post-upgrade hook of every canister.
+/// # Example
+/// ```rust
+/// #[post_upgrade]
+/// pub fn post_upgrade () {
+///   rustic::rustic_post_upgrade();
+/// 
+///  // your own post-upgrade code
+/// }
+/// ```
 pub fn rustic_post_upgrade(
     #[cfg(feature = "lifecycle")] stable_memory_bump: bool,
     #[cfg(feature = "lifecycle")] major_bump: bool,

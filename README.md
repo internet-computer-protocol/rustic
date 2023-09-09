@@ -30,7 +30,7 @@ Set environment variable `RUSTIC_USER_PAGE_END`. This value should NOT change ac
 Once you set the user page range, you can never change it! Make sure to leave enough space for future upgrades. Be reasonable and don't set the value too high either, as you pay storage fees for the entire page range even if empty.
 
 ## Basic Usage
-
+See examples.
 
 ## Initialization and post-upgrade hooks
 The module must be initialized in the init hook of the main application. The rustic module must be initialized first before everything else.
@@ -60,8 +60,6 @@ When using the `lifecycle` feature (enabled by default), in the post-upgrade hoo
 ## Notes
 Do NOT use the pre-upgrade hook in your application EVER. This feature shall be considered deprecated.
 
-# Known issues
-
 # Caveats
 1. Update guard is not executed during unit tests (or any calls from within the canister). This behavior differs from Solidity modifier guards.
 `#[update(guard = "only_owner")] pub fn transfer_ownership` expands to:
@@ -87,6 +85,9 @@ Do NOT use the pre-upgrade hook in your application EVER. This feature shall be 
     }
 ```
 In order to have guards that work for both internal and external calls, the `rustic-macros` crate includes a `modifiers` macro that works for both internal and external calls.
+2. The access control is purely on the application level. Note that there's also a system level `controller` that could perform canister upgrades 
+
+# Known issues
 
 # License
 MIT
