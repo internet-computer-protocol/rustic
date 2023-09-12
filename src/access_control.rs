@@ -28,7 +28,7 @@
 //! Unused roles can simply be ignored.
 
 /// `grant_admin` may fail if memory page is full.
-use crate::default_memory_map::*;
+use crate::memory_map::*;
 #[cfg(test)]
 use crate::testing::*;
 use crate::types::*;

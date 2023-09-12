@@ -1,6 +1,6 @@
 #![cfg(feature = "lifecycle")]
 // Canister Lifecycle Management
-use crate::default_memory_map::*;
+use crate::memory_map::*;
 #[cfg(test)]
 use crate::testing::*;
 use crate::types::*;

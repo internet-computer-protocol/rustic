@@ -1,4 +1,4 @@
-use crate::default_memory_map::*;
+use crate::memory_map::*;
 use crate::types::*;
 use candid::{candid_method, CandidType};
 use ic_cdk_macros::query;
