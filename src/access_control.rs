@@ -23,8 +23,8 @@
 //! `admins` is the manager of all roles (excluding itself), and is the only role that can configure the role admins.
 //!
 //! A `role_admin` can add/revoke principals to that role, but cannot configure the role admins.
-//! A fixed number of 32 roles are defined, and each role is represented by a number of `u8` in [0,32). 
-//! This number was chosen for the most space-efficient implementation, and should be enough for all practical applications. 
+//! A fixed number of 32 roles are defined, and each role is represented by a number of `u8` in [0,32).
+//! This number was chosen for the most space-efficient implementation, and should be enough for all practical applications.
 //! Unused roles can simply be ignored.
 
 /// `grant_admin` may fail if memory page is full.
@@ -304,7 +304,6 @@ thread_local! {
     });
 }
 
-
 // If any role in the role flag is a role admin of another role.
 // Panics if role index is out of range.
 #[cfg(feature = "access-roles")]
@@ -320,10 +319,10 @@ fn is_role_admin(role_flag: u32, role: u8) -> bool {
 
 /// Grants roles to a principal. Must be called by the `owner` or a `role_admin`.
 /// Returns a vector of booleans indicating whether each role was successfully granted, in the same order as the input.
-/// 
-/// When a role has already been granted prior to calling this function, 
+///
+/// When a role has already been granted prior to calling this function,
 /// but the current caller has the permission to grant the role,
-/// the return value for that role is `true`. 
+/// the return value for that role is `true`.
 /// When a role has already been granted prior to calling this function,
 /// but the current caller does not have the permission to grant the role,
 /// the return value for that role is `false`.
@@ -355,7 +354,7 @@ pub fn grant_roles(roles: Vec<u8>, principal: Principal) -> Vec<bool> {
 
 /// Revokes roles from a principal. Must be called by the `owner` or a `role_admin`.
 /// Returns a vector of booleans indicating whether each role was successfully revoked, in the same order as the input.
-/// 
+///
 /// When a role has already been revoked prior to calling this function,
 /// but the current caller has the permission to revoke the role,
 /// the return value for that role is `true`.
@@ -541,9 +540,7 @@ mod access_tests {
         access_init(canister_caller());
         assert!(only_owner().is_ok());
         assert!(owner() == Principal::from_text(MOCK_USER_0).ok());
-        transfer_ownership(Some(
-            Principal::from_text(MOCK_USER_1).unwrap(),
-        ));
+        transfer_ownership(Some(Principal::from_text(MOCK_USER_1).unwrap()));
         assert!(owner() == Principal::from_text(MOCK_USER_0).ok());
         set_mock_caller(Principal::from_text(MOCK_USER_1).unwrap());
         assert!(only_owner().is_err());
@@ -573,9 +570,7 @@ mod access_tests {
         access_init(canister_caller());
         assert!(only_owner().is_ok());
         set_mock_caller(Principal::from_text(MOCK_USER_1).unwrap());
-        transfer_ownership(Some(
-            Principal::from_text(MOCK_USER_1).unwrap(),
-        ));
+        transfer_ownership(Some(Principal::from_text(MOCK_USER_1).unwrap()));
     }
 
     #[test]
@@ -583,9 +578,7 @@ mod access_tests {
         set_mock_caller(Principal::from_text(MOCK_USER_0).unwrap());
         access_init(canister_caller());
         assert!(only_owner().is_ok());
-        transfer_ownership(Some(
-            Principal::from_text(MOCK_USER_0).unwrap(),
-        ));
+        transfer_ownership(Some(Principal::from_text(MOCK_USER_0).unwrap()));
         assert!(only_owner().is_ok());
         accept_ownership();
         assert!(only_owner().is_ok());
@@ -596,12 +589,8 @@ mod access_tests {
         set_mock_caller(Principal::from_text(MOCK_USER_0).unwrap());
         access_init(canister_caller());
         assert!(only_admin().is_ok());
-        assert!(is_admin(
-            Principal::from_text(MOCK_USER_0).unwrap()
-        ));
-        assert!(!is_admin(
-            Principal::from_text(MOCK_USER_1).unwrap()
-        ));
+        assert!(is_admin(Principal::from_text(MOCK_USER_0).unwrap()));
+        assert!(!is_admin(Principal::from_text(MOCK_USER_1).unwrap()));
         set_mock_caller(Principal::from_text(MOCK_USER_1).unwrap());
         assert!(only_admin().is_err());
     }
@@ -610,13 +599,9 @@ mod access_tests {
     fn test_grant_admin() {
         set_mock_caller(Principal::from_text(MOCK_USER_0).unwrap());
         access_init(canister_caller());
-        assert!(!is_admin(
-            Principal::from_text(MOCK_USER_1).unwrap()
-        ));
+        assert!(!is_admin(Principal::from_text(MOCK_USER_1).unwrap()));
         grant_admin(Principal::from_text(MOCK_USER_1).unwrap());
-        assert!(is_admin(
-            Principal::from_text(MOCK_USER_1).unwrap()
-        ));
+        assert!(is_admin(Principal::from_text(MOCK_USER_1).unwrap()));
         set_mock_caller(Principal::from_text(MOCK_USER_1).unwrap());
         assert!(only_admin().is_ok());
     }
@@ -625,13 +610,9 @@ mod access_tests {
     fn test_revoke_admin() {
         set_mock_caller(Principal::from_text(MOCK_USER_0).unwrap());
         access_init(canister_caller());
-        assert!(is_admin(
-            Principal::from_text(MOCK_USER_0).unwrap()
-        ));
+        assert!(is_admin(Principal::from_text(MOCK_USER_0).unwrap()));
         revoke_admin(Principal::from_text(MOCK_USER_0).unwrap());
-        assert!(!is_admin(
-            Principal::from_text(MOCK_USER_0).unwrap()
-        ));
+        assert!(!is_admin(Principal::from_text(MOCK_USER_0).unwrap()));
         set_mock_caller(Principal::from_text(MOCK_USER_0).unwrap());
         assert!(only_admin().is_err());
     }
@@ -641,15 +622,11 @@ mod access_tests {
         set_mock_caller(Principal::from_text(MOCK_USER_0).unwrap());
         access_init(canister_caller());
         grant_admin(Principal::from_text(MOCK_USER_1).unwrap());
-        assert!(is_admin(
-            Principal::from_text(MOCK_USER_1).unwrap()
-        ));
+        assert!(is_admin(Principal::from_text(MOCK_USER_1).unwrap()));
         set_mock_caller(Principal::from_text(MOCK_USER_1).unwrap());
         assert!(only_admin().is_ok());
         renounce_admin();
-        assert!(!is_admin(
-            Principal::from_text(MOCK_USER_1).unwrap()
-        ));
+        assert!(!is_admin(Principal::from_text(MOCK_USER_1).unwrap()));
     }
 
     #[test]
