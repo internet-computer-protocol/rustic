@@ -21,7 +21,7 @@ Rustic is a framework for developing canisters on the Internet Computer.
 - [x] pausable: equivalent to OpenZeppelin Pausable
 - [ ] payment: payment helpers
 - [x] reentrancy: equivalent to OpenZeppelin ReentrancyGuard
-- [ ] testing: helpers for unit testing
+- [x] testing: helpers for unit testing
 - [ ] tokens: fungible and non-fungible tokens
 
 # Usage

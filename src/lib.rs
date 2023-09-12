@@ -6,10 +6,10 @@ pub use rustic_macros::*;
 use utils::canister_caller;
 
 pub mod access_control;
-pub mod memory_map;
 mod global_flags;
 pub mod inter_canister;
 pub mod lifecycle;
+pub mod memory_map;
 pub mod pausable;
 pub mod reentrancy_guard;
 pub mod testing;
