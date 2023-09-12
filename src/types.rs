@@ -47,7 +47,7 @@ where
 /// Stable storage for Principal
 /// # Panics
 /// Panics if the serialization/deserialization fails.
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct StablePrincipal(Blob<29>);
 
 impl From<Principal> for StablePrincipal {
@@ -56,6 +56,21 @@ impl From<Principal> for StablePrincipal {
         Self(Blob::try_from(caller.as_slice()).unwrap())
     }
 }
+
+impl From<&Principal> for StablePrincipal {
+    fn from(caller: &Principal) -> Self {
+        #[allow(clippy::unwrap_used)] // unwrap expected
+        Self(Blob::try_from(caller.as_slice()).unwrap())
+    }
+}
+
+impl Into<Principal> for StablePrincipal {
+    fn into(self) -> Principal {
+        #[allow(clippy::unwrap_used)] // unwrap expected
+        Principal::try_from(self.0.as_slice()).unwrap()
+    }
+}
+
 impl BoundedStorable for StablePrincipal {
     const MAX_SIZE: u32 = 29;
     const IS_FIXED_SIZE: bool = false;

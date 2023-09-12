@@ -38,6 +38,8 @@ pub(crate) fn global_flags_init() {
     });
 }
 
+/// Returns the `RUSTIC_USER_PAGE_END` constant used during setup.
+/// This value is set through a environment variable and shall remain constant across versions.
 #[candid_method(query)]
 #[query]
 pub async fn get_config_user_page_end() -> u64 {

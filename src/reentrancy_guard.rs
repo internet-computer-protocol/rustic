@@ -6,6 +6,21 @@
 // The guard is binding for each calling principal globally for all functions implementing the guard
 #![cfg(feature = "reentrancy")]
 
+//! OpenZeppelin style reentrancy guard.
+//! 
+//! The concurrency model of the IC is different from that of Ethereum, and a different class of reentrancy issues exist.
+//! This library's reentrancy guard deals with a specific type of reentrancy issue,
+//! which is limited to a single user, across one single or multiple endpoints.
+//! 
+//! # Examples
+//! Basic usage:
+//! ```
+//! use rustic::reentrancy_guard::ReentrancyGuard;
+//! pub fn some_func() {
+//!     let _guard = ReentrancyGuard::new();
+//! }
+//! ```
+
 use crate::default_memory_map::*;
 #[cfg(test)]
 use crate::testing::*;
@@ -33,6 +48,7 @@ impl ReentrancyGuard {
         let caller = canister_caller();
         if REENTRANCY_GUARD_MAP.with(|g| g.borrow().contains_key(&caller.into())) {
             ic_cdk::trap("ReentrancyGuard: reentrant call");
+            //panic!("ReentrancyGuard: reentrant call");
         }
         REENTRANCY_GUARD_MAP.with(|g| g.borrow_mut().insert(caller.into(), ()));
         Self { caller }
@@ -73,4 +89,11 @@ mod unit_tests {
         let _guard = ReentrancyGuard::new();
         test_reentrancy_guard_non_reentrant();
     }
+
+    // #[test]
+    // #[should_panic(expected = "trap should only be called inside canisters")]
+    // #[rustic_macros::modifiers("non_reentrant")]
+    // fn test_reentrancy_guard_reentrant_macro() {
+    //     test_reentrancy_guard_reentrant_macro();
+    // }
 }

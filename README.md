@@ -36,6 +36,7 @@ See examples.
 The module must be initialized in the init hook of the main application. The rustic module must be initialized first before everything else.
 
 ```rust
+# use ic_cdk::init;
 #[init]
 pub fn init () {
     rustic::rustic_init();
@@ -46,9 +47,10 @@ pub fn init () {
 
 The module has a post-upgrade method that you must call in your post-upgrade hook.
 ```rust
+# use ic_cdk::post_upgrade;
 #[post_upgrade]
 pub fn post_upgrade () {
-    rustic::rustic_post_upgrade();
+    rustic::rustic_post_upgrade(false, true, false);
 
     // post upgrade code for your canister
 }
@@ -64,8 +66,10 @@ Do NOT use the pre-upgrade hook in your application EVER. This feature shall be 
 1. Update guard is not executed during unit tests (or any calls from within the canister). This behavior differs from Solidity modifier guards.
 `#[update(guard = "only_owner")] pub fn transfer_ownership` expands to:
 ```rust
-    /// # This exported function contains the guard
-    #[export_name = "canister_update transfer_ownership"]
+    # use candid::Principal;
+    # use rustic::access_control::only_owner;
+    // This exported function contains the guard
+    // #[export_name = "canister_update transfer_ownership"]
     fn transfer_ownership_0_() {
         ic_cdk::setup();
         let r: Result<(), String> = only_owner();
@@ -79,7 +83,7 @@ Do NOT use the pre-upgrade hook in your application EVER. This feature shall be 
             ic_cdk::api::call::reply(())
         });
     }
-    /// # This internal function does not contain the guard
+    // This internal function does not contain the guard
     pub fn transfer_ownership(new_owner: Option<Principal>) {
         // implemantation of transfer_ownership
     }

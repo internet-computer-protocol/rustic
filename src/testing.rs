@@ -119,3 +119,13 @@ pub fn mock_instruction_counter() -> u64 {
 pub fn is_mock_controller(controller: &Principal) -> bool {
     MOCK_DATA.with(|data| data.borrow().controllers.contains(controller))
 }
+
+pub const MOCK_CANISTER_0: &str = "a4gq6-oaaaa-aaaab-qaa4q-cai";
+pub const MOCK_CANISTER_1: &str = "mxzaz-hqaaa-aaaar-qaada-cai";
+pub const MOCK_CANISTER_2: &str = "3e3x2-xyaaa-aaaaq-aaalq-cai";
+pub const MOCK_CANISTER_3: &str = "2jvtu-yqaaa-aaaaq-aaama-cai";
+
+pub const MOCK_USER_0: &str = "4wcqb-taebw-q5ohj-iwsve-rkznz-aep3a-iv7wl-a5ycz-ajkay-3wmxt-eae";
+pub const MOCK_USER_1: &str = "zlyyc-cf25m-zxq5j-xxy2p-2mmg2-5bv7b-4urrf-tmhkd-reoee-exfr6-kae";
+pub const MOCK_USER_2: &str = "z7zpk-qms36-hlrrb-ofttm-4jais-bk2be-kpyi4-s2w4g-mso4z-h72do-gqe";
+pub const MOCK_USER_3: &str = "ocm3z-6jyo2-xypcq-uchk4-7mhnj-q3wyb-slscx-37fbv-zjeuh-5mfqm-eae";
