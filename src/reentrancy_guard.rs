@@ -10,7 +10,7 @@
 //!
 //! The concurrency model of the IC is different from that of Ethereum, and a different class of reentrancy issues exist.
 //! This library's reentrancy guard deals with a specific type of reentrancy issue,
-//! which is limited to a single user, across one single or multiple endpoints.
+//! which is limited to a single user, across one single function or multiple functions.
 //!
 //! # Examples
 //! Basic usage:

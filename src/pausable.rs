@@ -1,7 +1,14 @@
-// =============================================
-// Pausable
-// =============================================
 #![cfg(feature = "pausable")]
+
+//! OpenZeppelin style pausable feature.
+//!
+//! Note that on the IC canisters have system stopping capabilities.
+//! This is unrelated to this pausable feature. This feature is entirely implemented on the application level.
+//!
+//! The pausable feature is especially useful when certain public-facing functions
+//! need to be disabled whilst other functions can still be called normally.
+//!
+//! By default only `admins` can pause/resume.
 
 use crate::access_control::*;
 use crate::global_flags::*;
@@ -12,6 +19,8 @@ use candid::candid_method;
 use ic_cdk_macros::{query, update};
 use rustic_macros::modifiers;
 
+/// Guard method for validating when a canister is not paused.
+/// This is typically used in conjunction with the [`modifiers`] macro.
 pub fn when_not_paused() -> Result<(), String> {
     #[allow(clippy::unwrap_used)] // unwrap desired
     if GLOBAL_FLAGS.with(|f| f.borrow().get().0.clone().unwrap().paused) {
@@ -21,6 +30,26 @@ pub fn when_not_paused() -> Result<(), String> {
     }
 }
 
+/// Guard method for validating when a canister is paused.
+/// This is typically used in conjunction with the [`modifiers`] macro.
+pub fn when_paused() -> Result<(), String> {
+    #[allow(clippy::unwrap_used)] // unwrap desired
+    if GLOBAL_FLAGS.with(|f| f.borrow().get().0.clone().unwrap().paused) {
+        Ok(())
+    } else {
+        Err("Contract is not paused".to_string())
+    }
+}
+
+/// Query method to get the current pause status.
+#[candid_method(query)]
+#[query]
+pub fn is_paused() -> bool {
+    #[allow(clippy::unwrap_used)] // unwrap desired
+    GLOBAL_FLAGS.with(|f| f.borrow().get().0.clone().unwrap().paused)
+}
+
+/// Pauses the canister. Can only be called by admins.
 #[candid_method(update)]
 #[update]
 #[modifiers("only_admin")]
@@ -35,6 +64,7 @@ pub fn pause() {
     });
 }
 
+/// Resumes the canister. Can only be called by admins.
 #[candid_method(update)]
 #[update]
 #[modifiers("only_admin")]
@@ -49,12 +79,7 @@ pub fn resume() {
     });
 }
 
-#[candid_method(query)]
-#[query]
-pub fn is_paused() -> bool {
-    #[allow(clippy::unwrap_used)] // unwrap desired
-    GLOBAL_FLAGS.with(|f| f.borrow().get().0.clone().unwrap().paused)
-}
+// TODO: add pause/resume from roles
 
 #[cfg(test)]
 mod unit_tests {
