@@ -53,6 +53,7 @@ impl ReentrancyGuard {
         if REENTRANCY_GUARD_MAP.with(|g| g.borrow().contains_key(&caller.into())) {
             ic_cdk::trap("ReentrancyGuard: reentrant call");
             //panic!("ReentrancyGuard: reentrant call");
+            unreachable!();
         }
         REENTRANCY_GUARD_MAP.with(|g| g.borrow_mut().insert(caller.into(), ()));
         Self { caller }
