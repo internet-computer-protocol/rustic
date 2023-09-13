@@ -2,7 +2,7 @@
 // ReentrancyGuard
 // =============================================
 // Usage: declare `_guard = ReentrancyGuard::new();` at the beginning of a public-facing update function
-// Attention: the name must be `_some_text` and not `_` in order for the drop checker to be properly scoped
+//
 // The guard is binding for each calling principal globally for all functions implementing the guard
 #![cfg(feature = "reentrancy")]
 
@@ -18,8 +18,12 @@
 //! use rustic::reentrancy_guard::ReentrancyGuard;
 //! pub fn some_func() {
 //!     let _guard = ReentrancyGuard::new();
+//!     // non reentrant code
 //! }
 //! ```
+//!
+//! # Attention
+//! The variable name must be `_guard` or `_some_text` and not `_` in order for the drop checker to be properly scoped.
 
 use crate::memory_map::*;
 #[cfg(test)]
