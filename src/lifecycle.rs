@@ -1,5 +1,7 @@
 #![cfg(feature = "lifecycle")]
-// Canister Lifecycle Management
+//! Canister Lifecycle Management
+//! 
+
 use crate::memory_map::*;
 #[cfg(test)]
 use crate::testing::*;
@@ -60,8 +62,8 @@ pub(crate) fn canister_lifecycle_init() {
     });
 }
 
-/// Function to be called in the post upgrade hook
-pub fn lifecycle_on_upgrade(stable_memory_bump: bool, major_bump: bool, minor_bump: bool) {
+// Function to be called in the post upgrade hook
+pub(crate) fn lifecycle_on_upgrade(stable_memory_bump: bool, major_bump: bool, minor_bump: bool) {
     CANISTER_LIFECYCLE.with(|l| {
         let mut l = l.borrow_mut();
         #[allow(clippy::unwrap_used)] // safe unwrap
@@ -85,6 +87,7 @@ pub fn lifecycle_on_upgrade(stable_memory_bump: bool, major_bump: bool, minor_bu
     });
 }
 
+/// Returns the current version of the canister.
 #[query]
 #[candid_method(query)]
 pub fn get_version() -> CanisterLifecycle {
@@ -92,6 +95,7 @@ pub fn get_version() -> CanisterLifecycle {
     CANISTER_LIFECYCLE.with(|l| l.borrow().get().0.clone().unwrap())
 }
 
+/// Returns the current version of the canister as a string.
 #[query]
 #[candid_method(query)]
 pub fn get_version_text() -> String {

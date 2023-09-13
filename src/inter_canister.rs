@@ -1,7 +1,25 @@
+//! Utilities for facilitating inter canister calls.
+
 use candid::Principal;
 use ic_cdk::api::call::CallResult;
 use std::fmt::Debug;
 
+/// Calls a method on another canister.
+/// # Example
+/// ```rust
+/// # use ic_cdk::api::call::CallResult;
+/// # use candid::{CandidType, Deserialize, Principal};
+/// # use rustic::inter_canister::canister_call;
+/// # pub async fn test() {
+/// let result: CallResult<u32> = canister_call(
+///    Principal::from_text("rrkah-fqaaa-aaaaa-aaaaq-cai").unwrap(),
+///    "greet",
+///    42,
+///    candid::encode_one,
+///    |r| candid::decode_one(r)
+/// ).await;
+/// # }
+/// ```
 pub async fn canister_call<A, R, S, D, SError: Debug, DError: Debug>(
     canister_id: Principal,
     method_name: &str,
