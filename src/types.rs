@@ -1,3 +1,4 @@
+//! Type definitions.
 use candid::Principal;
 use ic_stable_structures::memory_manager::VirtualMemory;
 use ic_stable_structures::storable::Blob;

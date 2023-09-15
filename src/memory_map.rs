@@ -32,7 +32,7 @@ pub(crate) const REENTRANCY_GUARD_MEM_ID: MemoryId = MemoryId::new(224);
 //pub(crate) const CANISTER_LIFECYCLE_MEM_ID: MemoryId = MemoryId::new(225);
 //pub(crate) const STABLE_LOG_MEM_ID: MemoryId = MemoryId::new(226);
 //pub(crate) const STABLE_TRACE_MEM_ID: MemoryId = MemoryId::new(227);
-pub(crate) const UPGRADE_BUFFER_MEM_ID: MemoryId = MemoryId::new(228);
+//pub(crate) const UPGRADE_BUFFER_MEM_ID: MemoryId = MemoryId::new(228);
 pub(crate) const ACCESS_ROLES_MEM_ID: MemoryId = MemoryId::new(229);
 
 thread_local! {

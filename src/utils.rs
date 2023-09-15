@@ -1,3 +1,5 @@
+//! Utility functions.
+
 use candid::Principal;
 
 // Anonymous callers can be dangerous if not properly validated

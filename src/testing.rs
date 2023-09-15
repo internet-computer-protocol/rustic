@@ -1,8 +1,8 @@
 #![cfg(any(test, doc))]
 //! Utils for unit testing.
 //!
-//! In order to use the mock features, use [`utils::canister_caller`] instead of `ic_cdk::api::caller`
-//! and [`utils::canister_id`] instead of `ic_cdk::api::id`, etc.
+//! In order to use the mock features, use [`crate::utils::canister_caller()`] instead of `ic_cdk::api::caller()`
+//! and [`crate::utils::canister_id()`] instead of `ic_cdk::api::id()`, etc.
 
 use candid::Principal;
 use std::cell::RefCell;
