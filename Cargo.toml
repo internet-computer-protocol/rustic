@@ -18,8 +18,8 @@ categories = ["cryptography::cryptocurrencies", "finance", "wasm"]
 [dependencies]
 candid = { version = "0.9", features = ["parser"] }
 ciborium = "0.2"
-ic-cdk = "0.10"
-ic-cdk-macros = "0.7"
+ic-cdk = "0.11"
+ic-cdk-macros = "0.8"
 ic-stable-structures = "0.5"
 num-traits = "0.2"
 serde = "1.0"
