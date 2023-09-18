@@ -1,6 +1,6 @@
 [package]
 name = "rustic"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Benji Zhai"]
 edition = "2021"
 rust-version = "1.65.0"
@@ -18,8 +18,8 @@ categories = ["cryptography::cryptocurrencies", "finance", "wasm"]
 [dependencies]
 candid = { version = "0.9", features = ["parser"] }
 ciborium = "0.2"
-ic-cdk = "0.10"
-ic-cdk-macros = "0.7"
+ic-cdk = "0.11"
+ic-cdk-macros = "0.8"
 ic-stable-structures = "0.5"
 num-traits = "0.2"
 serde = "1.0"
@@ -30,6 +30,7 @@ rustic-macros = "0.1"
 default = ["access-roles", "reentrancy", "lifecycle"]
 access = []
 access-roles = ["access"]
+export-candid = []
 lifecycle = []
 logging = []
 pausable = ["access"]

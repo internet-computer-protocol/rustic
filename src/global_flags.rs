@@ -1,6 +1,6 @@
 use crate::memory_map::*;
 use crate::types::*;
-use candid::{candid_method, CandidType};
+use candid::CandidType;
 use ic_cdk_macros::query;
 use ic_stable_structures::{DefaultMemoryImpl, StableCell};
 use std::cell::RefCell;
@@ -40,7 +40,6 @@ pub(crate) fn global_flags_init() {
 
 /// Returns the `RUSTIC_USER_PAGE_END` constant used during setup.
 /// This value is set through a environment variable and shall remain constant across versions.
-#[candid_method(query)]
 #[query]
 pub async fn get_config_user_page_end() -> u64 {
     GLOBAL_FLAGS.with(|gf| {
