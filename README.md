@@ -40,6 +40,7 @@ The Rustic framework provides an easy way to use stable memory using the [`ic-st
 - The user pages start from `USER_PAGE_START` which is page 64.
 - Users can store data structures with a known bounded size (read: cannot grow indefinitely) in pages until `RUSTIC_USER_PAGE_END` which is defined in an environment variable.
 - The remaining memory is managed by the `MEMORY_MANAGER` and can be used for storing unbounded data structures (such as `StableBTreeMap` and `StableVec`).
+- `MEMORY_MANAGER` can dynamically allocate memory with `MemoryId`. The `MemoryId` of each data structure must be unique. `MemoryId` range [0,223] is available for users, while range [224,255] is reserved for Rustic.
 
 ### Initialization and post-upgrade hooks
 The module must be initialized in the init hook of the main application. The Rustic module must be initialized first before everything else.
