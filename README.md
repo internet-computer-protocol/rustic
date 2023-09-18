@@ -33,7 +33,7 @@ Once you set the user page range, you can never change it! Make sure to leave en
 See examples.
 
 ### Stable Memory
-The Internet Computer canisters have ?? GB of heap memory that is wiped during canister upgrades, plus ?? GB of stable memory that is perserved across canister upgrades. For robustness and upgradability reasons we should almost always prefer stable memory.
+The Internet Computer canisters have ?? GB of heap memory that is wiped during canister upgrades, plus ?? GB of stable memory that is perserved across canister upgrades. For robustness and upgradability reasons we should *almost always* prefer stable memory.
 
 The Rustic framework provides an easy way to use stable memory using the [`ic-stable-structures`](https://docs.rs/ic-stable-structures/latest/ic_stable_structures/) crate. Rustic uses the following memory map:
 - The first 64 pages are reserved for use by Rustic.
