@@ -33,7 +33,7 @@ use crate::memory_map::*;
 use crate::testing::*;
 use crate::types::*;
 use crate::utils::*;
-use candid::{candid_method, CandidType, Principal};
+use candid::{CandidType, Principal};
 use ic_cdk_macros::{query, update};
 use ic_stable_structures::{DefaultMemoryImpl, StableBTreeMap, StableCell};
 use rustic_macros::modifiers;
@@ -104,7 +104,6 @@ pub fn only_owner() -> Result<(), String> {
 }
 
 /// Checks if a principal is the owner.
-#[candid_method(query)]
 #[query]
 pub fn is_owner(owner: Principal) -> bool {
     ACCESS_CONTROL.with(|c| {
@@ -120,7 +119,6 @@ pub fn is_owner(owner: Principal) -> bool {
 /// The ownership is not affected until the new owners calls [`accept_ownership`],
 /// at which point ownership would be transfered from the original owner to the new owner.
 /// If the `new_owner` is set to `None`, then any pending ownership transfer is cancelled.
-#[candid_method(update)]
 #[update]
 #[modifiers("only_owner")]
 pub fn transfer_ownership(new_owner: Option<Principal>) {
@@ -147,7 +145,6 @@ pub fn transfer_ownership(new_owner: Option<Principal>) {
 ///
 /// The use of this function is discouraged, as there is no recourse if the wrong principal is specified.
 /// This function is useful in cases where the accepting principal cannot call [`accept_ownership`].
-#[candid_method(update)]
 #[update]
 #[modifiers("only_owner")]
 pub fn transfer_ownership_immediate(new_owner: Option<Principal>) {
@@ -171,7 +168,6 @@ pub fn transfer_ownership_immediate(new_owner: Option<Principal>) {
 }
 
 /// Accepts ownership transfer. The caller must be the pending owner.
-#[candid_method(update)]
 #[update]
 pub fn accept_ownership() {
     ACCESS_CONTROL.with(|c| {
@@ -194,7 +190,6 @@ pub fn accept_ownership() {
 }
 
 /// Query method to get the current owner.
-#[candid_method(query)]
 #[query]
 pub fn owner() -> Option<Principal> {
     #[allow(clippy::unwrap_used)] // unwrap desired
@@ -202,7 +197,6 @@ pub fn owner() -> Option<Principal> {
 }
 
 /// Query method to get the current pending owner.
-#[candid_method(query)]
 #[query]
 pub fn pending_owner() -> Option<Principal> {
     #[allow(clippy::unwrap_used)] // unwrap desired
@@ -231,7 +225,6 @@ pub fn only_admin() -> Result<(), String> {
 }
 
 /// Checks if a principal is an admin.
-#[candid_method(query)]
 #[query]
 pub fn is_admin(admin: Principal) -> bool {
     #[allow(clippy::unwrap_used)] // unwrap desired
@@ -239,7 +232,6 @@ pub fn is_admin(admin: Principal) -> bool {
 }
 
 /// Grants admin to a new Principal. Must be called by the `owner`.
-#[candid_method(update)]
 #[update]
 #[modifiers("only_owner")]
 pub fn grant_admin(new_admin: Principal) {
@@ -261,7 +253,6 @@ pub fn grant_admin(new_admin: Principal) {
 }
 
 /// Revokes admin from a Principal. Must be called by the `owner`.
-#[candid_method(update)]
 #[update]
 #[modifiers("only_owner")]
 pub fn revoke_admin(admin: Principal) {
@@ -276,7 +267,6 @@ pub fn revoke_admin(admin: Principal) {
 }
 
 /// Revokes admin from the caller. Must be called by the admin itself.
-#[candid_method(update)]
 #[update]
 #[modifiers("only_admin")]
 pub fn renounce_admin() {
@@ -327,7 +317,6 @@ fn is_role_admin(role_flag: u32, role: u8) -> bool {
 /// but the current caller does not have the permission to grant the role,
 /// the return value for that role is `false`.
 #[cfg(feature = "access-roles")]
-#[candid_method(update)]
 #[update]
 pub fn grant_roles(roles: Vec<u8>, principal: Principal) -> Vec<bool> {
     // caller authentication in arithmetics
@@ -362,7 +351,6 @@ pub fn grant_roles(roles: Vec<u8>, principal: Principal) -> Vec<bool> {
 /// but the current caller does not have the permission to revoke the role,
 /// the return value for that role is `false`.
 #[cfg(feature = "access-roles")]
-#[candid_method(update)]
 #[update]
 pub fn revoke_roles(roles: Vec<u8>, principal: Principal) -> Vec<bool> {
     // caller authentication arithmetics
@@ -389,7 +377,6 @@ pub fn revoke_roles(roles: Vec<u8>, principal: Principal) -> Vec<bool> {
 
 /// Returns the bitflag of roles granted to a principal.
 #[cfg(feature = "access-roles")]
-#[candid_method(query)]
 #[query]
 pub fn get_user_roles(principal: Principal) -> u32 {
     ACCESS_ROLES.with(|c| {
@@ -401,7 +388,6 @@ pub fn get_user_roles(principal: Principal) -> u32 {
 /// Checks whether a principal has a certain role.
 /// Returns a boolean indicating whether the principal has the role.
 #[cfg(feature = "access-roles")]
-#[candid_method(query)]
 #[query]
 pub fn user_has_role(role: u8, principal: Principal) -> bool {
     ACCESS_ROLES.with(|c| {
@@ -429,7 +415,6 @@ pub fn has_role(role: u8) -> Result<(), String> {
 /// Checks whether a principal has all of the specified roles.
 /// Returns a boolean indicating whether the principal has all of the roles.
 #[cfg(feature = "access-roles")]
-#[candid_method(query)]
 #[query]
 pub fn user_has_roles_all(roles: Vec<u8>, principal: Principal) -> bool {
     ACCESS_ROLES.with(|c| {
@@ -457,7 +442,6 @@ pub fn has_roles_all(roles: Vec<u8>) -> Result<(), String> {
 /// Checks whether a principal has any of the specified roles.
 /// Returns a boolean indicating whether the principal has any of the roles.
 #[cfg(feature = "access-roles")]
-#[candid_method(query)]
 #[query]
 pub fn user_has_roles_any(roles: Vec<u8>, principal: Principal) -> bool {
     ACCESS_ROLES.with(|c| {
@@ -484,7 +468,6 @@ pub fn has_roles_any(roles: Vec<u8>) -> Result<(), String> {
 
 /// Sets role admins for a role. Must be called by admins.
 #[cfg(feature = "access-roles")]
-#[candid_method(update)]
 #[update]
 #[modifiers("only_admin")]
 pub fn set_role_admins(role: u8, admins: Vec<u8>) {
@@ -503,7 +486,6 @@ pub fn set_role_admins(role: u8, admins: Vec<u8>) {
 
 /// Revokes role admins for a role. Must be called by admins.
 #[cfg(feature = "access-roles")]
-#[candid_method(update)]
 #[update]
 #[modifiers("only_admin")]
 pub fn revoke_role_admins(role: u8, admins: Vec<u8>) {

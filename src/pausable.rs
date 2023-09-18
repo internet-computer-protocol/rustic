@@ -15,7 +15,6 @@ use crate::global_flags::*;
 #[cfg(test)]
 use crate::testing::*;
 use crate::types::*;
-use candid::candid_method;
 use ic_cdk_macros::{query, update};
 use rustic_macros::modifiers;
 
@@ -42,7 +41,6 @@ pub fn when_paused() -> Result<(), String> {
 }
 
 /// Query method to get the current pause status.
-#[candid_method(query)]
 #[query]
 pub fn is_paused() -> bool {
     #[allow(clippy::unwrap_used)] // unwrap desired
@@ -50,7 +48,6 @@ pub fn is_paused() -> bool {
 }
 
 /// Pauses the canister. Can only be called by admins.
-#[candid_method(update)]
 #[update]
 #[modifiers("only_admin")]
 pub fn pause() {
@@ -65,7 +62,6 @@ pub fn pause() {
 }
 
 /// Resumes the canister. Can only be called by admins.
-#[candid_method(update)]
 #[update]
 #[modifiers("only_admin")]
 pub fn resume() {

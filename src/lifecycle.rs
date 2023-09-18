@@ -1,13 +1,13 @@
 #![cfg(feature = "lifecycle")]
 //! Canister Lifecycle Management
-//! 
+//!
 
 use crate::memory_map::*;
 #[cfg(test)]
 use crate::testing::*;
 use crate::types::*;
 use crate::utils::*;
-use candid::{candid_method, CandidType};
+use candid::CandidType;
 use ic_cdk_macros::query;
 use ic_stable_structures::{DefaultMemoryImpl, StableCell};
 use std::cell::RefCell;
@@ -89,7 +89,6 @@ pub(crate) fn lifecycle_on_upgrade(stable_memory_bump: bool, major_bump: bool, m
 
 /// Returns the current version of the canister.
 #[query]
-#[candid_method(query)]
 pub fn get_version() -> CanisterLifecycle {
     #[allow(clippy::unwrap_used)] // safe unwrap
     CANISTER_LIFECYCLE.with(|l| l.borrow().get().0.clone().unwrap())
@@ -97,7 +96,6 @@ pub fn get_version() -> CanisterLifecycle {
 
 /// Returns the current version of the canister as a string.
 #[query]
-#[candid_method(query)]
 pub fn get_version_text() -> String {
     #[allow(clippy::unwrap_used)] // safe unwrap
     CANISTER_LIFECYCLE.with(|l| l.borrow().get().0.clone().unwrap().to_string())
