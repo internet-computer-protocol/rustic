@@ -31,10 +31,25 @@ where
     S: Fn(A) -> Result<Vec<u8>, SError>,
     D: Fn(&[u8]) -> Result<R, DError>,
 {
+    canister_call_with_payment(canister_id, method_name, args, serializer, deserializer, 0).await
+}
+
+pub async fn canister_call_with_payment<A, R, S, D, SError: Debug, DError: Debug>(
+    canister_id: Principal,
+    method_name: &str,
+    args: A,
+    serializer: S,
+    deserializer: D,
+    cycles: u128,
+) -> CallResult<R>
+where
+    S: Fn(A) -> Result<Vec<u8>, SError>,
+    D: Fn(&[u8]) -> Result<R, DError>,
+{
     let payload_bytes = prepare_request(canister_id, method_name, args, serializer)?;
 
     let response =
-        ic_cdk::api::call::call_raw128(canister_id, method_name, &payload_bytes, 0).await;
+        ic_cdk::api::call::call_raw128(canister_id, method_name, &payload_bytes, cycles).await;
 
     process_response(canister_id, method_name, response, deserializer)
 }
