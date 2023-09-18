@@ -1,6 +1,6 @@
 [package]
 name = "rustic"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Benji Zhai"]
 edition = "2021"
 rust-version = "1.65.0"
