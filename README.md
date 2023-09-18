@@ -56,6 +56,15 @@ pub fn post_upgrade () {
 }
 ```
 
+## Export Candid
+The `export-candid` allows candid export using the mechanism introduced in `ic-cdk` [v0.11](https://github.com/dfinity/cdk-rs/blob/main/src/ic-cdk/CHANGELOG.md#0110---2023-09-18). However due to how this mechanism works, the candid needs to be exported twice, once in your application and once from the Rustic library.
+
+To export the candid from Rustic, use Rustic with the `export-candid` feature, and comment out `ic_cdk::export_candid!()` in your main canister to avoid conflicts. Then generate wasm once, and use [`candid-extractor`](https://github.com/dfinity/cdk-rs/tree/main/src/candid-extractor) to extract the candid.
+
+Then to export candid from your main application, disable the `export-candid` feature, add `ic_cdk::export_candid!()` to your main canister, compile and extract candid again.
+
+Manually combine the two candid files to get the final candid for your canister.
+
 ## Lifecycle
 When using the `lifecycle` feature (enabled by default), in the post-upgrade hook of the new canister, the `lifecycle_on_upgrade` method is called via calling `rustic::rustic_post_upgrade`. For the semver you'll need to specify whether you want a major/minor/patchlevel version bump. If the stable memory layout changed (make sure you test compatibility as this is not checked by rustic), bump the stable memory version. If you bump the major version then the minor/patchlevel are ignored and will be set to start from 0. 
 
