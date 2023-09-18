@@ -59,3 +59,6 @@ pub fn rustic_post_upgrade(
     #[cfg(feature = "lifecycle")]
     crate::lifecycle::lifecycle_on_upgrade(stable_memory_bump, major_bump, minor_bump);
 }
+
+#[cfg(feature = "export-candid")]
+ic_cdk::export_candid!();

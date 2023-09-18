@@ -30,6 +30,7 @@ rustic-macros = "0.1"
 default = ["access-roles", "reentrancy", "lifecycle"]
 access = []
 access-roles = ["access"]
+export-candid = []
 lifecycle = []
 logging = []
 pausable = ["access"]
