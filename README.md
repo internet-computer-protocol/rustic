@@ -1,12 +1,12 @@
 # Rustic Framework
 Rustic is a framework for developing canisters on the Internet Computer.
 
-# Design Goals
+## Design Goals
 - Simplicity. A developer should not need to know all implementation details in most cases.
 - Follows best practices. This library should incorporate up-to-date know-how in canister development.
 - OpenZeppelin style. Most usage patterns from other chains such as ETH should also be implemented here.
 
-# Features
+## Features
 - [x] access: access control equivalent to OpenZeppelin Ownable2Step + admin list
 - [x] access-roles: access control equivalent to OpenZeppelin AccessControl
 - [ ] audit-events: events for auditing
@@ -24,15 +24,15 @@ Rustic is a framework for developing canisters on the Internet Computer.
 - [x] testing: helpers for unit testing
 - [ ] tokens: fungible and non-fungible tokens
 
-# Usage
-## Before you start
+## Usage
+### Before you start
 Set environment variable `RUSTIC_USER_PAGE_END`. This value should NOT change across upgrades!
 Once you set the user page range, you can never change it! Make sure to leave enough space for future upgrades. Be reasonable and don't set the value too high either, as you pay storage fees for the entire page range even if empty.
 
-## Basic Usage
+### Basic Usage
 See examples.
 
-## Initialization and post-upgrade hooks
+### Initialization and post-upgrade hooks
 The module must be initialized in the init hook of the main application. The rustic module must be initialized first before everything else.
 
 ```rust
@@ -56,7 +56,7 @@ pub fn post_upgrade () {
 }
 ```
 
-## Export Candid
+### Export Candid
 The `export-candid` allows candid export using the mechanism introduced in `ic-cdk` [v0.11](https://github.com/dfinity/cdk-rs/blob/main/src/ic-cdk/CHANGELOG.md#0110---2023-09-18). However due to how this mechanism works, the candid needs to be exported twice, once in your application and once from the Rustic library.
 
 To export the candid from Rustic, use Rustic with the `export-candid` feature, and comment out `ic_cdk::export_candid!()` in your main canister to avoid conflicts. Then generate wasm once, and use [`candid-extractor`](https://github.com/dfinity/cdk-rs/tree/main/src/candid-extractor) to extract the candid.
@@ -65,13 +65,13 @@ Then to export candid from your main application, disable the `export-candid` fe
 
 Manually combine the two candid files to get the final candid for your canister.
 
-## Lifecycle
+### Lifecycle
 When using the `lifecycle` feature (enabled by default), in the post-upgrade hook of the new canister, the `lifecycle_on_upgrade` method is called via calling `rustic::rustic_post_upgrade`. For the semver you'll need to specify whether you want a major/minor/patchlevel version bump. If the stable memory layout changed (make sure you test compatibility as this is not checked by rustic), bump the stable memory version. If you bump the major version then the minor/patchlevel are ignored and will be set to start from 0. 
 
-## Notes
+### Notes
 Do NOT use the pre-upgrade hook in your application EVER. This feature shall be considered deprecated.
 
-# Caveats
+## Caveats
 1. Update guard is not executed during unit tests (or any calls from within the canister). This behavior differs from Solidity modifier guards.
 `#[update(guard = "only_owner")] pub fn transfer_ownership` expands to:
 ```rust
@@ -98,9 +98,10 @@ Do NOT use the pre-upgrade hook in your application EVER. This feature shall be 
     }
 ```
 In order to have guards that work for both internal and external calls, the `rustic-macros` crate includes a `modifiers` macro that works for both internal and external calls.
-2. The access control is purely on the application level. Note that there's also a system level `controller` that could perform canister upgrades 
 
-# Known issues
+2. The access control is purely on the application level. Note that there's also a system level `controller` that could perform canister upgrades.
 
-# License
+## Known issues
+
+## License
 MIT
