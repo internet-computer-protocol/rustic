@@ -32,8 +32,18 @@ Once you set the user page range, you can never change it! Make sure to leave en
 ### Basic Usage
 See examples.
 
+### Stable Memory
+The Internet Computer canisters have 4 GB of heap memory that is wiped during canister upgrades, plus 96 GB of stable memory that is perserved across canister upgrades. For robustness and upgradability reasons we should *almost always* prefer stable memory.
+
+The Rustic framework provides an easy way to use stable memory using the [`ic-stable-structures`](https://docs.rs/ic-stable-structures/latest/ic_stable_structures/) crate. Rustic uses the following memory map:
+- The first 64 pages are reserved for use by Rustic.
+- The user pages start from `USER_PAGE_START` which is page 64.
+- Users can store data structures with a known bounded size (read: cannot grow indefinitely) in pages until `RUSTIC_USER_PAGE_END` which is defined in an environment variable.
+- The remaining memory is managed by the `MEMORY_MANAGER` and can be used for storing unbounded data structures (such as `StableBTreeMap` and `StableVec`).
+- `MEMORY_MANAGER` can dynamically allocate memory with `MemoryId`. The `MemoryId` of each data structure must be unique. `MemoryId` range [0,223] is available for users, while range [224,255] is reserved for Rustic.
+
 ### Initialization and post-upgrade hooks
-The module must be initialized in the init hook of the main application. The rustic module must be initialized first before everything else.
+The module must be initialized in the init hook of the main application. The Rustic module must be initialized first before everything else.
 
 ```rust
 # use ic_cdk::init;
