@@ -3,7 +3,6 @@
 // Re-export the macros
 #[doc(inline)]
 pub use rustic_macros::*;
-use utils::canister_caller;
 
 pub mod access_control;
 mod global_flags;
@@ -16,6 +15,12 @@ pub mod testing;
 //pub mod logging;
 pub mod types;
 pub mod utils;
+
+#[cfg(feature = "lifecycle")]
+use crate::lifecycle::CanisterLifecycle;
+use crate::utils::canister_caller;
+
+use candid::Principal;
 
 /// Initializes the Rustic module. Needs to be called in the init hook of every canister.
 /// # Example
