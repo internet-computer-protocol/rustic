@@ -20,7 +20,7 @@ pub mod utils;
 use crate::lifecycle::CanisterLifecycle;
 use crate::utils::canister_caller;
 
-use candid::Principal;
+//use candid::Principal;
 
 /// Initializes the Rustic module. Needs to be called in the init hook of every canister.
 /// # Example
