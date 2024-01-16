@@ -2,7 +2,7 @@
 use candid::Principal;
 use ic_stable_structures::memory_manager::VirtualMemory;
 use ic_stable_structures::storable::Blob;
-use ic_stable_structures::{BoundedStorable, DefaultMemoryImpl, RestrictedMemory, Storable};
+use ic_stable_structures::{DefaultMemoryImpl, RestrictedMemory, Storable};
 use std::borrow::Cow;
 
 pub type RM = RestrictedMemory<DefaultMemoryImpl>;
@@ -43,6 +43,9 @@ where
         #[allow(clippy::unwrap_used)] // unwrap expected
         Self(ciborium::de::from_reader(bytes.as_ref()).unwrap())
     }
+
+    const BOUND: ic_stable_structures::storable::Bound =
+        ic_stable_structures::storable::Bound::Unbounded;
 }
 
 /// Stable storage for Principal
@@ -72,11 +75,6 @@ impl Into<Principal> for StablePrincipal {
     }
 }
 
-impl BoundedStorable for StablePrincipal {
-    const MAX_SIZE: u32 = 29;
-    const IS_FIXED_SIZE: bool = false;
-}
-
 /// # Panics
 /// Panics if the serialization/deserialization fails.
 impl Storable for StablePrincipal {
@@ -88,4 +86,10 @@ impl Storable for StablePrincipal {
         #[allow(clippy::unwrap_used)] // unwrap expected
         Self(Blob::try_from(bytes.as_ref()).unwrap())
     }
+
+    const BOUND: ic_stable_structures::storable::Bound =
+        ic_stable_structures::storable::Bound::Bounded {
+            max_size: 29,
+            is_fixed_size: false,
+        };
 }
