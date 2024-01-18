@@ -8,11 +8,12 @@ pub mod access_control;
 mod global_flags;
 pub mod inter_canister;
 pub mod lifecycle;
+pub mod logging;
+pub mod logging_stable;
 pub mod memory_map;
 pub mod pausable;
 pub mod reentrancy_guard;
 pub mod testing;
-//pub mod logging;
 pub mod types;
 pub mod utils;
 
@@ -42,7 +43,7 @@ pub fn rustic_init() {
     #[cfg(feature = "lifecycle")]
     crate::lifecycle::canister_lifecycle_init();
     #[cfg(feature = "logging")]
-    crate::logging::logging_init(true); // Trace always enabled
+    crate::logging::init(true); // Trace always enabled
 }
 
 /// Post-upgrade hook for Rustic. Needs to be called in the post-upgrade hook of every canister.
@@ -65,5 +66,7 @@ pub fn rustic_post_upgrade(
     crate::lifecycle::lifecycle_on_upgrade(stable_memory_bump, major_bump, minor_bump);
 }
 
+#[cfg(feature = "export-candid")]
+use candid::Principal;
 #[cfg(feature = "export-candid")]
 ic_cdk::export_candid!();

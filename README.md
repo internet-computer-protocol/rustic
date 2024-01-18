@@ -11,13 +11,14 @@ Rustic is a framework for developing canisters on the Internet Computer.
 - [x] access-roles: access control equivalent to OpenZeppelin AccessControl
 - [ ] audit-events: events for auditing
 - [ ] backup: backup data
-- [ ] cache: cache for performance
+- [ ] cache: cache frequently read data into heap for performance
 - [ ] certified: certified queries
 - [ ] factory: canister factories
 - [ ] https: https interface to the canister with metrics etc
 - [ ] inspection: cycle histogram for update methods
 - [x] lifecycle: canister lifecycle management
-- [ ] logging: canister logging
+- [x] logging: canister logging in heap
+- [x] stable-logging: canister logging in stable memory
 - [x] pausable: equivalent to OpenZeppelin Pausable
 - [ ] payment: payment helpers
 - [x] reentrancy: equivalent to OpenZeppelin ReentrancyGuard
