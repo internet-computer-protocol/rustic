@@ -642,9 +642,9 @@ mod access_role_tests {
         R3 = 3,
     }
 
-    impl std::convert::Into<u8> for Role {
-        fn into(self) -> u8 {
-            self as u8
+    impl From<Role> for u8 {
+        fn from(role: Role) -> Self {
+            role as u8
         }
     }
 
@@ -671,25 +671,55 @@ mod access_role_tests {
 
     // thread 'access_control::access_role_tests::test_grant_roles' panicked at 'Role update failed', src/access_control.rs:226:14
     #[test]
-    fn test_grant_roles(){
+    fn test_grant_roles() {
         use std::collections::BTreeMap;
         set_mock_caller(Principal::from_text(MOCK_USER_0).unwrap());
         access_init(canister_caller());
 
-        assert!(!user_has_role(Role::R0.into(), Principal::from_text(MOCK_USER_1).unwrap()));
-        assert!(!user_has_role(Role::R1.into(), Principal::from_text(MOCK_USER_1).unwrap()));
-        assert!(!user_has_role(Role::R2.into(), Principal::from_text(MOCK_USER_1).unwrap()));
-        assert!(!user_has_role(Role::R3.into(), Principal::from_text(MOCK_USER_1).unwrap()));
+        assert!(!user_has_role(
+            Role::R0.into(),
+            Principal::from_text(MOCK_USER_1).unwrap()
+        ));
+        assert!(!user_has_role(
+            Role::R1.into(),
+            Principal::from_text(MOCK_USER_1).unwrap()
+        ));
+        assert!(!user_has_role(
+            Role::R2.into(),
+            Principal::from_text(MOCK_USER_1).unwrap()
+        ));
+        assert!(!user_has_role(
+            Role::R3.into(),
+            Principal::from_text(MOCK_USER_1).unwrap()
+        ));
 
         assert!(is_admin(canister_caller()));
 
-        grant_roles(vec![Role::R0.into(),Role::R1.into()], Principal::from_text(MOCK_USER_1).unwrap());
-        grant_roles(vec![ROLE0,ROLE1], Principal::from_text(MOCK_USER_1).unwrap());
+        grant_roles(
+            vec![Role::R0.into(), Role::R1.into()],
+            Principal::from_text(MOCK_USER_1).unwrap(),
+        );
+        grant_roles(
+            vec![ROLE0, ROLE1],
+            Principal::from_text(MOCK_USER_1).unwrap(),
+        );
 
-        assert!(user_has_role(Role::R0.into(), Principal::from_text(MOCK_USER_1).unwrap()));
-        assert!(user_has_role(Role::R1.into(), Principal::from_text(MOCK_USER_1).unwrap()));
-        assert!(!user_has_role(Role::R2.into(), Principal::from_text(MOCK_USER_1).unwrap()));
-        assert!(!user_has_role(Role::R3.into(), Principal::from_text(MOCK_USER_1).unwrap()));
+        assert!(user_has_role(
+            Role::R0.into(),
+            Principal::from_text(MOCK_USER_1).unwrap()
+        ));
+        assert!(user_has_role(
+            Role::R1.into(),
+            Principal::from_text(MOCK_USER_1).unwrap()
+        ));
+        assert!(!user_has_role(
+            Role::R2.into(),
+            Principal::from_text(MOCK_USER_1).unwrap()
+        ));
+        assert!(!user_has_role(
+            Role::R3.into(),
+            Principal::from_text(MOCK_USER_1).unwrap()
+        ));
 
         let mut test_btreemap: BTreeMap<u32, u32> = BTreeMap::new();
         let first_insertion = test_btreemap.insert(12u32, 4u32);
@@ -697,6 +727,5 @@ mod access_role_tests {
         assert_eq!(first_insertion, None);
         assert_eq!(second_insertion, 4);
         assert_eq!(test_btreemap.get(&12u32), Some(7).as_ref());
-
     }
 }
