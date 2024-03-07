@@ -26,8 +26,6 @@
 //! The variable name must be `_guard` or `_some_text` and not `_` in order for the drop checker to be properly scoped.
 
 use crate::memory_map::*;
-#[cfg(test)]
-use crate::testing::*;
 use crate::types::*;
 use crate::utils::*;
 use candid::Principal;
@@ -78,6 +76,7 @@ mod unit_tests {
 
     #[test]
     #[should_panic(expected = "trap should only be called inside canisters")]
+    #[allow(unconditional_recursion)]
     fn test_reentrancy_guard_reentrant() {
         let _guard = ReentrancyGuard::new();
         test_reentrancy_guard_reentrant();

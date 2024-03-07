@@ -650,7 +650,9 @@ mod access_role_tests {
 
     const ROLE0: u8 = 0;
     const ROLE1: u8 = 1;
+    #[allow(unused)]
     const ROLE2: u8 = 2;
+    #[allow(unused)]
     const ROLE3: u8 = 3;
 
     #[test]

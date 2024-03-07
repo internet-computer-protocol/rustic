@@ -17,11 +17,7 @@ pub mod testing;
 pub mod types;
 pub mod utils;
 
-#[cfg(feature = "lifecycle")]
-use crate::lifecycle::CanisterLifecycle;
 use crate::utils::canister_caller;
-
-//use candid::Principal;
 
 /// Initializes the Rustic module. Needs to be called in the init hook of every canister.
 /// # Example
@@ -66,6 +62,8 @@ pub fn rustic_post_upgrade(
     crate::lifecycle::lifecycle_on_upgrade(stable_memory_bump, major_bump, minor_bump);
 }
 
+#[cfg(all(feature = "lifecycle", feature = "export-candid"))]
+use crate::lifecycle::CanisterLifecycle;
 #[cfg(feature = "export-candid")]
 use candid::Principal;
 #[cfg(feature = "export-candid")]

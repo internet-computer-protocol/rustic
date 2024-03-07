@@ -68,10 +68,10 @@ impl From<&Principal> for StablePrincipal {
     }
 }
 
-impl Into<Principal> for StablePrincipal {
-    fn into(self) -> Principal {
+impl From<&StablePrincipal> for Principal {
+    fn from(caller: &StablePrincipal) -> Self {
         #[allow(clippy::unwrap_used)] // unwrap expected
-        Principal::try_from(self.0.as_slice()).unwrap()
+        Principal::try_from(caller.0.as_slice()).unwrap()
     }
 }
 

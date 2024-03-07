@@ -91,12 +91,12 @@ pub fn remove_mock_controller(controller: Principal) {
 
 /// Gets the mock controller for unit testing.
 pub fn mock_caller() -> Principal {
-    MOCK_DATA.with(|data| data.borrow().caller.clone())
+    MOCK_DATA.with(|data| data.borrow().caller)
 }
 
 /// Gets the mock canister id for unit testing.
 pub fn mock_id() -> Principal {
-    MOCK_DATA.with(|data| data.borrow().id.clone())
+    MOCK_DATA.with(|data| data.borrow().id)
 }
 
 /// Gets the mock system canister version for unit testing.

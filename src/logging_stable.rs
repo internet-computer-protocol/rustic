@@ -31,6 +31,7 @@ thread_local! {
 #[derive(CandidType, Serialize, Deserialize, Clone)]
 pub struct StableLogEntry {
     pub timestamp: u64,
+    pub level: Level,
     pub message: String,
 }
 
@@ -56,4 +57,31 @@ impl Storable for StableLogEntry {
 
     const BOUND: ic_stable_structures::storable::Bound =
         ic_stable_structures::storable::Bound::Unbounded;
+}
+
+impl std::display::Display for StableLogEntry {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} {:?}", self.timestamp, self.message)
+    }
+}
+
+/// Add a line of given log level to the debug log, only when
+/// the given level is smaller than or equal to config.debug_log_level.
+pub fn stable_log(level: LogLevel, line: String) -> Result<(), ReturnError> {
+    let config = get_mpc_config();
+    if (level as u8) <= config.debug_log_level {
+        STABLE_LOG.with(|log| {
+            log.borrow()
+                .append(&format!(
+                    "{} {:?} {}",
+                    canister_time() / 1_000_000,
+                    level,
+                    line
+                ))
+                .map(|_| ())
+                .map_err(|_| ReturnError::OutOfMemory)
+        })
+    } else {
+        Ok(())
+    }
 }

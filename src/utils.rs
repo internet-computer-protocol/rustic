@@ -89,6 +89,7 @@ pub fn instruction_counter() -> u64 {
 }
 
 #[inline]
+#[allow(unused_variables)]
 pub fn performance_counter(counter_type: u32) -> u64 {
     #[cfg(not(test))]
     return ic_cdk::api::performance_counter(counter_type);
