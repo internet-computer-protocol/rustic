@@ -140,14 +140,14 @@ dependencies = [
 
 [[package]]
 name = "candid"
-version = "0.10.2"
+version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "39be580be172631a35cac2fc6c765f365709de459edb88121b3e7a80cce6c1ec"
+checksum = "7fcd70c7bed52cb20e38dd933c19c0c9abf0302b60db3fa3186e27ec53edf6ad"
 dependencies = [
  "anyhow",
  "binread",
  "byteorder",
- "candid_derive 0.6.5",
+ "candid_derive 0.6.6",
  "hex",
  "ic_principal",
  "leb128",
@@ -175,9 +175,9 @@ dependencies = [
 
 [[package]]
 name = "candid_derive"
-version = "0.6.5"
+version = "0.6.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "970c220da8aa2fa6f7ef5dbbf3ea5b620a59eb3ac107cfb95ae8c6eebdfb7a08"
+checksum = "3de398570c386726e7a59d9887b68763c481477f9a043fb998a2e09d428df1a9"
 dependencies = [
  "lazy_static",
  "proc-macro2",
@@ -434,12 +434,12 @@ dependencies = [
 
 [[package]]
 name = "ic-cdk"
-version = "0.12.1"
+version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9f3d204af0b11c45715169c997858edb58fa8407d08f4fae78a6b415dd39a362"
+checksum = "c63a6fceb94127bda86bd6d05f859a0e2a67d128a8ffb5ddab17e1f15ac8f555"
 dependencies = [
- "candid 0.10.2",
- "ic-cdk-macros 0.8.4",
+ "candid 0.10.4",
+ "ic-cdk-macros 0.9.0",
  "ic0 0.21.1",
  "serde",
  "serde_bytes",
@@ -461,11 +461,11 @@ dependencies = [
 
 [[package]]
 name = "ic-cdk-macros"
-version = "0.8.4"
+version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a5a618e4020cea88e933d8d2f8c7f86d570ec06213506a80d4f2c520a9bba512"
+checksum = "2fde5ca6ef1e69825c68916ff1bf7256b8f7ed69ac5ea3f1756f6e57f1503e27"
 dependencies = [
- "candid 0.10.2",
+ "candid 0.10.4",
  "proc-macro2",
  "quote",
  "serde",
@@ -838,19 +838,19 @@ dependencies = [
 
 [[package]]
 name = "proptest"
-version = "1.2.0"
+version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4e35c06b98bf36aba164cc17cb25f7e232f5c4aeea73baa14b8a9f0d92dbfa65"
+checksum = "31b476131c3c86cb68032fdc5cb6d5a1045e3e42d96b69fa599fd77701e1f5bf"
 dependencies = [
  "bit-set",
- "bitflags 1.3.2",
- "byteorder",
+ "bit-vec",
+ "bitflags 2.4.0",
  "lazy_static",
  "num-traits",
  "rand",
  "rand_chacha",
  "rand_xorshift",
- "regex-syntax 0.6.29",
+ "regex-syntax 0.8.2",
  "rusty-fork",
  "tempfile",
  "unarray",
@@ -984,13 +984,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dbb5fb1acd8a1a18b3dd5be62d25485eb770e05afb408a9627d14d451bae12da"
 
 [[package]]
+name = "regex-syntax"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c08c74e62047bb2de4ff487b251e4a92e24f48745648451635cec7d591162d9f"
+
+[[package]]
 name = "rustic"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
- "candid 0.10.2",
+ "candid 0.10.4",
  "ciborium",
- "ic-cdk 0.12.1",
- "ic-cdk-macros 0.8.4",
+ "ic-cdk 0.13.1",
+ "ic-cdk-macros 0.9.0",
  "ic-stable-structures",
  "num-traits",
  "proptest",
