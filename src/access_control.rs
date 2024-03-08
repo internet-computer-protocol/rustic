@@ -167,6 +167,22 @@ pub fn transfer_ownership_immediate(new_owner: Option<Principal>) {
     });
 }
 
+/// Renounces ownership. Must be called by the current `owner`.
+#[update]
+#[modifiers("only_owner")]
+pub fn renounce_ownership() {
+    ACCESS_CONTROL.with(|c| {
+        let mut c = c.borrow_mut();
+        #[allow(clippy::unwrap_used)] // unwrap desired
+        let mut config = c.get().0.clone().unwrap();
+        config.owner = None;
+        config.pending_owner = None;
+        #[allow(clippy::expect_used)] // unwrap desired
+        c.set(Cbor(Some(config)))
+            .expect("Ownership transfer failed");
+    });
+}
+
 /// Accepts ownership transfer. The caller must be the pending owner.
 #[update]
 pub fn accept_ownership() {
@@ -201,6 +217,14 @@ pub fn owner() -> Option<Principal> {
 pub fn pending_owner() -> Option<Principal> {
     #[allow(clippy::unwrap_used)] // unwrap desired
     ACCESS_CONTROL.with(|c| c.borrow().get().0.clone().unwrap().pending_owner)
+}
+
+/// Query method to get the current owner and pending owner.
+#[query]
+pub fn owner_and_pending_owner() -> (Option<Principal>, Option<Principal>) {
+    #[allow(clippy::unwrap_used)] // unwrap desired
+    let config = ACCESS_CONTROL.with(|c| c.borrow().get().0.clone().unwrap());
+    (config.owner, config.pending_owner)
 }
 
 /// Checks if the caller is the admin.
@@ -283,7 +307,6 @@ pub fn renounce_admin() {
 
 // `access-roles` feature
 
-//#[cfg(feature = "access-roles")]
 thread_local! {
     // can be lazily initialized
     // mapping from Principal to bitflag of roles
