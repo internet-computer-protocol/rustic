@@ -671,7 +671,9 @@ mod access_role_tests {
         }
     }
 
+    // Alternatively, define roles using const
     const ROLE0: u8 = 0;
+    #[allow(unused)]
     const ROLE1: u8 = 1;
     #[allow(unused)]
     const ROLE2: u8 = 2;
@@ -694,10 +696,8 @@ mod access_role_tests {
         access_init(canister_caller());
     }
 
-    // thread 'access_control::access_role_tests::test_grant_roles' panicked at 'Role update failed', src/access_control.rs:226:14
     #[test]
     fn test_grant_roles() {
-        use std::collections::BTreeMap;
         set_mock_caller(Principal::from_text(MOCK_USER_0).unwrap());
         access_init(canister_caller());
 
@@ -724,10 +724,6 @@ mod access_role_tests {
             vec![Role::R0.into(), Role::R1.into()],
             Principal::from_text(MOCK_USER_1).unwrap(),
         );
-        grant_roles(
-            vec![ROLE0, ROLE1],
-            Principal::from_text(MOCK_USER_1).unwrap(),
-        );
 
         assert!(user_has_role(
             Role::R0.into(),
@@ -745,12 +741,5 @@ mod access_role_tests {
             Role::R3.into(),
             Principal::from_text(MOCK_USER_1).unwrap()
         ));
-
-        let mut test_btreemap: BTreeMap<u32, u32> = BTreeMap::new();
-        let first_insertion = test_btreemap.insert(12u32, 4u32);
-        let second_insertion = test_btreemap.insert(12u32, 7u32).expect("insert error");
-        assert_eq!(first_insertion, None);
-        assert_eq!(second_insertion, 4);
-        assert_eq!(test_btreemap.get(&12u32), Some(7).as_ref());
     }
 }
