@@ -113,7 +113,11 @@ Do NOT use the pre-upgrade hook in your application EVER. This feature shall be 
             return;
         }
         ic_cdk::spawn(async {
-            let (new_owner,) = ic_cdk::api::call::arg_data();
+            let (new_owner,) = ic_cdk::api::call::arg_data(ic_cdk::api::call::ArgDecoderConfig {
+                decoding_quota: None,
+                skipping_quota: Some(10000usize),
+                debug: false,
+            });
             let result = transfer_ownership(new_owner);
             ic_cdk::api::call::reply(())
         });
